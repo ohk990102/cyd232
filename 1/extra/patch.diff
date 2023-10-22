@@ -1,0 +1,75 @@
+diff -urNp KISA_bug/KISA_SHA256.c KISA_new/KISA_SHA256.c
+--- KISA_bug/KISA_SHA256.c	2016-05-02 20:18:34.241007575 +0900
++++ KISA_new/KISA_SHA256.c	2016-05-02 20:17:16.460366901 +0900
+@@ -29,12 +29,12 @@ const UINT SHA256_K[64] =
+ #define ENDIAN_REVERSE_ULONG(dwS)	( (ROTL_ULONG((dwS),  8) & 0x00ff00ff)	\
+ 									| (ROTL_ULONG((dwS), 24) & 0xff00ff00) )
+ 
+-#if defined(BIG_ENDIAN)
++#if defined(USER_BIG_ENDIAN)
+ 	#define BIG_B2D(B, D)		D = *(ULONG_PTR)(B)
+ 	#define BIG_D2B(D, B)		*(ULONG_PTR)(B) = (ULONG)(D)
+ 	#define LITTLE_B2D(B, D)	D = ENDIAN_REVERSE_ULONG(*(ULONG_PTR)(B))
+ 	#define LITTLE_D2B(D, B)	*(ULONG_PTR)(B) = ENDIAN_REVERSE_ULONG(D)
+-#elif defined(LITTLE_ENDIAN)
++#elif defined(USER_LITTLE_ENDIAN)
+ 	#define BIG_B2D(B, D)		D = ENDIAN_REVERSE_ULONG(*(ULONG_PTR)(B))
+ 	#define BIG_D2B(D, B)		*(ULONG_PTR)(B) = ENDIAN_REVERSE_ULONG(D)
+ 	#define LITTLE_B2D(B, D)	D = *(ULONG_PTR)(B)
+@@ -62,7 +62,7 @@ const UINT SHA256_K[64] =
+ //						  ChainVar		- 연쇄변수의 포인터 변수
+ // o 출력				: 
+ //*********************************************************************************************************************************
+-void SHA256_Transform(ULONG_PTR Message, ULONG_PTR ChainVar)
++void SHA256_Transform(ULONG_PTR Message, UINT_PTR ChainVar)
+ {
+ 	ULONG a, b, c, d, e, f, g, h, T1, X[64];
+ 	ULONG j;
+@@ -73,7 +73,7 @@ void SHA256_Transform(ULONG_PTR Message,
+ 	h = T1 + Sigma0(a) + Maj(a, b, c);						\
+ }
+ 
+-#if defined(BIG_ENDIAN)
++#if defined(USER_BIG_ENDIAN)
+ 	#define GetData(x)	x
+ #else
+ 	#define GetData(x)	ENDIAN_REVERSE_ULONG(x)
+@@ -182,7 +182,7 @@ void SHA256_Close( OUT SHA256_INFO *Info
+ 	else
+ 		memset((UCHAR_PTR)Info->szBuffer + Index, 0, (SINT)(SHA256_DIGEST_BLOCKLEN - Index - 8));
+ 
+-#if defined(LITTLE_ENDIAN)
++#if defined(USER_LITTLE_ENDIAN)
+ 	Info->uLowLength = ENDIAN_REVERSE_ULONG(Info->uLowLength);
+ 	Info->uHighLength = ENDIAN_REVERSE_ULONG(Info->uHighLength);
+ #endif
+diff -urNp KISA_bug/KISA_SHA256.h KISA_new/KISA_SHA256.h
+--- KISA_bug/KISA_SHA256.h	2016-05-02 20:18:12.730830398 +0900
++++ KISA_new/KISA_SHA256.h	2016-05-02 20:16:41.347077674 +0900
+@@ -24,24 +24,18 @@ extern "C" {
+ #define INOUT
+ #endif
+ 
+-#undef BIG_ENDIAN
+-#undef LITTLE_ENDIAN
+-
+ #if defined(USER_BIG_ENDIAN)
+-	#define BIG_ENDIAN
+ #elif defined(USER_LITTLE_ENDIAN)
+-	#define LITTLE_ENDIAN
+ #else
+ 	#if 0
+-		#define BIG_ENDIAN
+ 	#elif defined(_MSC_VER)
+-		#define LITTLE_ENDIAN
++		#define USER_LITTLE_ENDIAN
+ 	#else
+ 		#error
+ 	#endif
+ #endif
+ 
+-typedef unsigned long ULONG;
++typedef unsigned int ULONG;
+ typedef ULONG* ULONG_PTR;
+ 
+ typedef unsigned int UINT;
