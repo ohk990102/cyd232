@@ -248,14 +248,18 @@ void __ECC_BN_mul(ECC_BN * c, ECC_BN * a, ECC_BN * b)
   ECC_BN_copy(c, &out);
 }
 
-int ECC_BN_mod_p256(ECC_BN* c, ECC_BN* a)
+int ECC_BN_mod_p256(ECC_BN* c, ECC_BN* _a)
 {
   ECC_BN t1, t2, t3;
     // s2+s3    7    6    5    4    3  2   1   0 
       //s2 = (c15, c14, c13, c12, c11, 0, 0, 0), t1
       //s3 = (0,   c15, c14, c13, c12, 0, 0, 0), t2
   
-  for (int i = a->len; i < ECC_WORD_LEN; i++) {
+  ECC_BN __a;
+  ECC_BN_copy(&__a, _a);
+  ECC_BN *a = &__a;
+
+  for (int i = _a->len; i < ECC_WORD_LEN; i++) {
     a->dat[i] = 0;
   }
 
