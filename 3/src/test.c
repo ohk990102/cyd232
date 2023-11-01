@@ -4,8 +4,7 @@
 
 #define TEST_CASE 100000
 
-void test___ecc_bn_add()
-{
+void test___ecc_bn_add() {
   mpz_t a, b;
   mpz_t c;
 
@@ -13,12 +12,14 @@ void test___ecc_bn_add()
   ECC_BN expected, out;
   gmp_randstate_t state;
 
-  mpz_init(a); mpz_init(b); mpz_init(c);
+  mpz_init(a);
+  mpz_init(b);
+  mpz_init(c);
   gmp_randinit_default(state);
 
-  for(int i = 0; i < TEST_CASE; i++) {
+  for (int i = 0; i < TEST_CASE; i++) {
     if ((i + 1) % 1000 == 0) {
-      printf("TEST %d / %d\n", i+1, TEST_CASE);
+      printf("TEST %d / %d\n", i + 1, TEST_CASE);
     }
     mpz_urandomb(a, state, 256);
     if (i % 2 == 0)
@@ -47,8 +48,4 @@ void test___ecc_bn_add()
   return;
 }
 
-
-void main()
-{
-  test___ecc_bn_add();
-}
+void main() { test___ecc_bn_add(); }
