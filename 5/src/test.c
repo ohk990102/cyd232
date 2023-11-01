@@ -200,6 +200,9 @@ void test___ecc_bn_mul_mod_p256() {
 	mpz_urandomm(a, state, d);
 	mpz_urandomm(b, state, d);
 
+	a->_mp_size = 2;
+	b->_mp_size = 2;
+
 	mpz_mul(c, a, b);
 	mpz_mod(c, c, d);
 
@@ -209,15 +212,16 @@ void test___ecc_bn_mul_mod_p256() {
 
 	mpz_to_ECC_BN(&tmp, c);
 
-
-	if (ECC_BN_cmp(&ec_c, &tmp)) {
-	  printf("\ntest ECC_BN_mul_mod_p256 FAIL\n");
-	  return;
-	}
-
 	gmp_printf("a=%Zx\n",a);
 	gmp_printf("b=%Zx\n", b);
 	gmp_printf("c=%Zx\n", c);
+
+	if (ECC_BN_cmp(&ec_c, &tmp)) {
+	  printf("\ntest ECC_BN_mul_mod_p256 FAIL\n");
+	  ECC_BN_to_mpz(d, &ec_c);
+	  gmp_printf("ec_c=%Zx\n", d);
+	  return;
+	}
   }
 
   printf("\ntest ECC_BN_mul_mod_p256 PASS\n");

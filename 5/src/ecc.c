@@ -254,6 +254,11 @@ int ECC_BN_mod_p256(ECC_BN* c, ECC_BN* a)
     // s2+s3    7    6    5    4    3  2   1   0 
       //s2 = (c15, c14, c13, c12, c11, 0, 0, 0), t1
       //s3 = (0,   c15, c14, c13, c12, 0, 0, 0), t2
+  
+  for (int i = a->len; i < ECC_WORD_LEN; i++) {
+    a->dat[i] = 0;
+  }
+
   t1.dat[0] = t2.dat[0] = t2.dat[7] = 0;
   t1.dat[1] = t2.dat[1] = 0;
   t1.dat[2] = t2.dat[2] = 0;
