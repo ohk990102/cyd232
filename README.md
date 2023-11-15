@@ -14,3 +14,5 @@ sudo apt install build-essential gcc-multilib g++-multilib libgmp-dev:i386
 - [3주차](3/src/): ECC 구현 중 Big Number 덧셈 구현
 - [4주차](4/src/): ECC 구현 중 Big Number 뺄셈, 모듈러 덧셈/뺄셈 연산 구현
 - [5주차](5/src/): ECC 구현 중 Big Number 곱셈, 모듈러 곱셈(p256에 대해) 연산 구현
+- [6주차](6/src/): ECC 구현 중 Big Number Inversion 연산 구현
+- [7주차](7/src/): ECC 구현 중 타원 곡선 위의 덧셈, 두배 연산 구현
