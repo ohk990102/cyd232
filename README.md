@@ -17,3 +17,4 @@ sudo apt install build-essential gcc-multilib g++-multilib libgmp-dev:i386
 - [6주차](6/src/): ECC 구현 중 Big Number Inversion 연산 구현
 - [7주차](7/src/): ECC 구현 중 타원 곡선 위의 덧셈, 두배 연산 구현
 - [8주차](8/src/): ECC 구현 중 타원 곡선 위의 곱셈 연산, pubkey 유효성 검증 구현
+- [9주차](9/src/): ECC 구현 중 shift-subtract 알고리즘을 이용한 모듈러 곱셈 구현
